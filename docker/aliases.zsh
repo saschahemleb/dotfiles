@@ -12,3 +12,7 @@ function netshoot_docker_container() {
 	docker run -it --net container:$1 nicolaka/netshoot
 }
 alias netshoot_docker_host='docker run -it --net host nicolaka/netshoot'
+
+function k6() {
+    docker run --rm --interactive --volume $PWD:/app --workdir /app grafana/k6:master-with-browser $@
+}
