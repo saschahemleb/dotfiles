@@ -57,6 +57,7 @@ setup_gitconfig() {
 [user]
         name = $git_authorname
         email = $git_authoremail
+        signingkey = $HOME/.ssh/id_ed25519
 INI
   fi
 }
