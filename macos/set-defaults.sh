@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # https://macos-defaults.com/
 
 # Close any open System Preferences panes, to prevent them from overriding
@@ -45,18 +47,7 @@ defaults write com.apple.dock "static-only" -bool "true"
 # Scroll up on a Dock icon to show all Space's opened windows for an app
 defaults write com.apple.dock "scroll-to-open" -bool "true"
 
-for app in "Activity Monitor" \
-	"Address Book" \
-	"Calendar" \
-	"cfprefsd" \
-	"Contacts" \
-	"Dock" \
-	"Finder" \
-	"Mail" \
-	"Messages" \
-	"Photos" \
-	"Safari" \
-	"SystemUIServer" \
-	"Terminal"; do
+for app in "Dock" \
+	"Finder"; do
 	killall "${app}" &> /dev/null
 done

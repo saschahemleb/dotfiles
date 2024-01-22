@@ -43,7 +43,7 @@ pull_dotfiles() {
 set_macos_defaults() {
     echo -e "${yellow}Set macOS defaults"
 
-    "$dotfiles_dir"/macos/set-defaults.sh
+    run_or_fail_with "Could not set macOS defaults" "$dotfiles_dir"/macos/set-defaults.sh
 }
 
 setup_gitconfig() {
@@ -163,7 +163,7 @@ setup_brew() {
 }
 
 update() {
-    pull_dotfiles
+    #pull_dotfiles
     set_macos_defaults
     setup_gitconfig
     install_symlinks
