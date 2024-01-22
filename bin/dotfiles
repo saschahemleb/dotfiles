@@ -33,8 +33,103 @@ pull_dotfiles() {
     fi
 }
 
+setup_gitconfig() {
+  if ! [ -f git/gitconfig.local.symlink ]
+  then
+    echo -e "${yellow}What is your git author name?${nc}"
+    read -e git_authorname
+    echo -e "${yellow}What is your git author email?${nc}"
+    read -e git_authoremail
+
+    cat <<INI > git/gitconfig.local.symlink
+[user]
+        name = $git_authorname
+        email = $git_authoremail
+INI
+  fi
+}
+
+link_file() {
+  local src=$1 dst=$2
+
+  local overwrite= backup= skip=
+  local action=
+
+  if [ -f "$dst" -o -d "$dst" -o -L "$dst" ]
+  then
+
+    if [ "$overwrite_all" == "false" ] && [ "$backup_all" == "false" ] && [ "$skip_all" == "false" ]
+    then
+
+      local currentSrc="$(readlink $dst)"
+
+      if [ "$currentSrc" == "$src" ]
+      then
+
+        skip=true;
+
+      else
+        echo -e "${yellow}File already exists: $dst ($(basename "$src")), what do you want to do?\n\
+        [s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all?${nc}"
+        read -n 1 action
+
+        case "$action" in
+          o )
+            overwrite=true;;
+          O )
+            overwrite_all=true;;
+          b )
+            backup=true;;
+          B )
+            backup_all=true;;
+          s )
+            skip=true;;
+          S )
+            skip_all=true;;
+          * )
+            ;;
+        esac
+
+      fi
+
+    fi
+
+    overwrite=${overwrite:-$overwrite_all}
+    backup=${backup:-$backup_all}
+    skip=${skip:-$skip_all}
+
+    if [ "$overwrite" == "true" ]
+    then
+      echo rm -rf "$dst"
+    fi
+
+    if [ "$backup" == "true" ]
+    then
+      echo mv "$dst" "${dst}.backup"
+    fi
+  fi
+
+  if [ "$skip" != "true" ]
+  then
+    echo ln -s "$1" "$2"
+  fi
+}
+
+install_dotfiles() {
+  local overwrite_all=false backup_all=false skip_all=false
+
+  for src in $(find -H "$dotfiles_dir" -maxdepth 2 -name '*.symlink' -not -path '*.git*')
+  do
+    dst="$HOME/.$(basename "${src%.*}")"
+    link_file "$src" "$dst"
+  done
+}
+
 update() {
     pull_dotfiles
+    setup_gitconfig
+    install_dotfiles
+
     echo -e "${green}Success! Dotfiles updated${nc}"
 }
 

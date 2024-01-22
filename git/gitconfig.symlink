@@ -1,0 +1,12 @@
+[include]
+    path = ~/.gitconfig.local
+[credential]
+	helper = osxkeychain
+[push]
+	autoSetupRemote = true
+[gpg]
+	format = ssh
+[commit]
+	gpgsign = true
+[init]
+	defaultBranch = main
