@@ -25,8 +25,10 @@ help() {
 
 pull_dotfiles() {
     cd "$dotfiles_dir"
-    if ! git pull --all --prune --rebase; then
+    if ! out=$(2>&1 git pull --all --prune --rebase); then
         echo -e "${red}Error updating dotfiles checkout. Fix it and run update again${nc}"
+        echo "Output:"
+        echo "$out"
         exit 1;
     fi
 }
