@@ -34,12 +34,17 @@ pull_dotfiles() {
 }
 
 setup_gitconfig() {
-  if ! [ -f git/gitconfig.local.symlink ]
-  then
+  if ! [ -f git/gitconfig.local.symlink ]; then
     echo -e "${yellow}What is your git author name?${nc}"
     read -e git_authorname
     echo -e "${yellow}What is your git author email?${nc}"
     read -e git_authoremail
+
+    if ! [ -f $HOME/.ssh/id_ed255191 ]; then
+        echo -e "${yellow}No ssh key found. Will create a new one if you continue{$nc}"
+        echo "Abort with cmd-c"
+        read -p "Press any key to continue" -n1 -s
+    fi
 
     cat <<INI > git/gitconfig.local.symlink
 [user]
