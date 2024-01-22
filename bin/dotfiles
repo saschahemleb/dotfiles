@@ -35,16 +35,23 @@ pull_dotfiles() {
 
 setup_gitconfig() {
   if ! [ -f git/gitconfig.local.symlink ]; then
-    if ! [ -f $HOME/.ssh/id_ed255191 ]; then
+    create_key=false
+
+    if ! [ -f $HOME/.ssh/id_ed25519 ]; then
         echo -e "${yellow}No ssh key found. Will create a new one if you continue${nc}"
         echo ""
         read -p "Abort with cmd-c, press any key to continue" -n1 -s
+        create_key=true
     fi
-    
+
     echo -e "${yellow}What is your git author name?${nc}"
     read -e git_authorname
     echo -e "${yellow}What is your git author email?${nc}"
     read -e git_authoremail
+
+    if [ "$create_key" = "true" ]; then
+        ssh-keygen -t ed25519 -C "$git_authoremail"
+    fi
 
     cat <<INI > git/gitconfig.local.symlink
 [user]
