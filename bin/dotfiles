@@ -134,7 +134,7 @@ install_symlinks() {
 }
 
 setup_brew() {
-    
+    "$dotfiles_dir"/brew/install.sh
 }
 
 update() {
