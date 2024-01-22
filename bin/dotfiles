@@ -35,14 +35,20 @@ run_or_fail_with() {
 }
 
 pull_dotfiles() {
-    echo -e "${yellow}Pulling latest dotfiles changes"
+    echo -e "${yellow}Pulling latest dotfiles changes{$nc}"
     cd "$dotfiles_dir"
     run_or_fail_with "Error updating dotfiles checkout. Fix it and run update again" git pull --all --prune --rebase
 }
 
+set_macos_defaults() {
+    echo -e "${yellow}Set macOS defaults"
+
+    "$dotfiles_dir"/macos/set-defaults.sh
+}
+
 setup_gitconfig() {
   if [[ ! -f "$dotfiles_dir"/git/gitconfig.local.symlink ]]; then
-    echo -e "${yellow}Setting up git"
+    echo -e "${yellow}Setting up git{$nc}"
 
     local create_key=false
 
@@ -129,7 +135,7 @@ link_file() {
 }
 
 install_symlinks() {
-    echo -e "${yellow}Installing symlinks"
+    echo -e "${yellow}Installing symlinks{$nc}"
 
     local overwrite_all=false backup_all=false skip_all=false
 
@@ -158,6 +164,7 @@ setup_brew() {
 
 update() {
     pull_dotfiles
+    set_macos_defaults
     setup_gitconfig
     install_symlinks
     setup_brew
