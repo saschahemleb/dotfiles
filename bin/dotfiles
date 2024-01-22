@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -Eeuxo pipefail
+set -Eeuo pipefail
 
 red='\033[0;31m'
 green='\033[0;32m'
@@ -41,12 +41,12 @@ pull_dotfiles() {
 }
 
 setup_gitconfig() {
-  if ! [[ -f "$dotfiles_dir"/git/gitconfig.local.symlink ]]; then
+  if [[ ! -f "$dotfiles_dir"/git/gitconfig.local.symlink ]]; then
     echo -e "${yellow}Setting up git"
 
     local create_key=false
 
-    if ! [ -f $HOME/.ssh/id_ed25519 ]; then
+    if [[! -f $HOME/.ssh/id_ed25519 ]]; then
         echo -e "${yellow}No ssh key found. Will create a new one if you continue${nc}"
         echo ""
         read -p "Abort with cmd-c, press any key to continue" -n1 -s
@@ -58,7 +58,7 @@ setup_gitconfig() {
     echo -e "${yellow}What is your git author email?${nc}"
     read -e git_authoremail
 
-    if [ "$create_key" = "true" ]; then
+    if [[ "$create_key" = "true" ]]; then
         ssh-keygen -t ed25519 -C "$git_authoremail"
     fi
 
@@ -77,13 +77,12 @@ link_file() {
   local overwrite= backup= skip=
   local action=
 
-  if [ -f "$dst" -o -d "$dst" -o -L "$dst" ]; then
-
-    if [ "$overwrite_all" == "false" ] && [ "$backup_all" == "false" ] && [ "$skip_all" == "false" ]; then
+  if [[ -f "$dst" ]] || [[ -d "$dst" ]] || [[ -L "$dst" ]]; then
+    if [[ "$overwrite_all" == "false" ]] && [[ "$backup_all" == "false" ]] && [[ "$skip_all" == "false" ]]; then
 
       local currentSrc="$(readlink $dst)"
 
-      if [ "$currentSrc" == "$src" ]; then
+      if [[ "$currentSrc" == "$src" ]]; then
         skip=true;
       else
         echo -e "${yellow}File already exists: $dst ($(basename "$src")), what do you want to do?\n\
@@ -115,20 +114,17 @@ link_file() {
     backup=${backup:-$backup_all}
     skip=${skip:-$skip_all}
 
-    if [ "$overwrite" == "true" ]
-    then
+    if [[ "$overwrite" == "true" ]]; then
       rm -rf "$dst"
     fi
 
-    if [ "$backup" == "true" ]
-    then
+    if [[ "$backup" == "true" ]]; then
       mv "$dst" "${dst}.backup"
     fi
   fi
 
-  if [ "$skip" != "true" ]
-  then
-    ln -s "$1" "$2"
+  if [[ "$skip" != "true" ]]; then
+    ln -s "$src" "$dst"
   fi
 }
 
@@ -144,20 +140,19 @@ install_symlinks() {
 }
 
 setup_brew() {
-    echo -e "${yellow}Setting up brew.sh. Might ask for sudo password"
+    echo -e "${yellow}Setting up brew.sh. Might ask for sudo password${nc}"
 
-    if [[ ! $(which brew) ]]; then
+    if ! 1>/dev/null 2>&1 which brew; then
         /usr/bin/env bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-        eval "$(homebrew/bin/brew shellenv)"
-        source $dotfiles_dir
+        eval "$(/usr/local/bin/brew shellenv)"
     fi
 
     run_or_fail_with "Could not fetch latest Homebrew formulae" brew update
     run_or_fail_with "Error upgrading brew packages" brew upgrade
 
     bundle="$dotfiles_dir"/Brewfile
-    if [[ ! $(brew bundle check --file=$bundle) ]]; then
-        echo run_or_fail_with "Error installing Brewfile dependencies" brew bundle --file=$bundle
+    if ! 1>/dev/null 2>&1 brew bundle check --file=$bundle; then
+        run_or_fail_with "Error installing Brewfile dependencies" brew bundle --file=$bundle
     fi
 }
 

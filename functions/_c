@@ -1,0 +1,5 @@
+#compdef c
+_files -W $HOME/Code/git.eventim.net -/
+_files -W $GOPATH/src/git.eventim.net -/
+
+# See further documentation in `functions/c`
