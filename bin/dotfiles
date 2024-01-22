@@ -157,7 +157,7 @@ setup_brew() {
 
     bundle="$dotfiles_dir"/Brewfile
     if [[ ! $(brew bundle check --file=$bundle) ]]; then
-        run_or_fail_with "Error installing Brewfile dependencies" brew bundle --file=$bundle
+        echo run_or_fail_with "Error installing Brewfile dependencies" brew bundle --file=$bundle
     fi
 }
 
