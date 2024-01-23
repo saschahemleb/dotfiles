@@ -8,6 +8,8 @@ fi
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
 # shortcut to this dotfiles path is $DOTFILES
 export DOTFILES=$HOME/dotfiles
 
@@ -46,5 +48,4 @@ done
 
 unset config_files
 
-eval "$(/opt/homebrew/bin/brew shellenv)"
 eval "$(direnv hook zsh)"
