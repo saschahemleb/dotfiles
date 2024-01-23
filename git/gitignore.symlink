@@ -1,0 +1,6 @@
+.DS_STORE
+*~
+*.swp
+.idea
+plan.cache
+.envrc
