@@ -150,7 +150,7 @@ setup_brew() {
 
     if ! 1>/dev/null 2>&1 which brew; then
         /usr/bin/env bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-        eval "$(/usr/local/bin/brew shellenv)"
+        eval "$(/opt/homebrew/bin/brew shellenv)"
     fi
 
     run_or_fail_with "Could not fetch latest Homebrew formulae" brew update
