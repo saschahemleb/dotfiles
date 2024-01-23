@@ -52,7 +52,7 @@ setup_gitconfig() {
 
     local create_key=false
 
-    if [[! -f $HOME/.ssh/id_ed25519 ]]; then
+    if [[ ! -f $HOME/.ssh/id_ed25519 ]]; then
         echo -e "${yellow}No ssh key found. Will create a new one if you continue${nc}"
         echo ""
         read -p "Abort with cmd-c, press any key to continue" -n1 -s
