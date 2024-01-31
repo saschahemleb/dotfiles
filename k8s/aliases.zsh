@@ -1,3 +1,4 @@
+alias krew='kubectl krew'
 alias k=kubectl
 alias kcx='kubectl ctx'
 alias kns='kubectl ns'
