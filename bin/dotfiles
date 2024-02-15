@@ -62,12 +62,17 @@ setup_gitconfig() {
     echo -e "${yellow}Setting up git${nc}"
 
     local create_key=false
+    local ssh_key_file=""
 
-    if [[ ! -f $HOME/.ssh/id_ed25519 ]]; then
-        echo -e "${yellow}No ssh key found. Will create a new one if you continue${nc}"
-        echo ""
-        read -p "Abort with cmd-c, press any key to continue" -n1 -s
-        create_key=true
+    if [[ -f $HOME/.ssh/id_ed25519 ]]; then
+      ssh_key_file="$HOME/.ssh/id_ed25519"
+    elif [[ -f $HOME/.ssh/id_rsa ]]; then
+      ssh_key_file="$HOME/.ssh/id_rsa"
+    else
+      echo -e "${yellow}No ssh key found. Will create a new one if you continue${nc}"
+      echo ""
+      read -p "Abort with cmd-c, press any key to continue" -n1 -s
+      create_key=true
     fi
 
     echo -e "${yellow}What is your git author name?${nc}"
@@ -77,13 +82,14 @@ setup_gitconfig() {
 
     if [[ "$create_key" = "true" ]]; then
         ssh-keygen -t ed25519 -C "$git_authoremail"
+        ssh_key_file="$HOME/.ssh/id_ed25519"
     fi
 
     cat <<INI > git/gitconfig.local.symlink
 [user]
         name = $git_authorname
         email = $git_authoremail
-        signingkey = $HOME/.ssh/id_ed25519
+        signingkey = $ssh_key_file
 INI
   fi
 }
