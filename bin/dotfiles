@@ -180,7 +180,7 @@ setup_brew() {
 }
 
 update() {
-    # pull_dotfiles
+    pull_dotfiles
     check_workstation_type
     set_macos_defaults
     setup_gitconfig
