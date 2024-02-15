@@ -40,6 +40,17 @@ pull_dotfiles() {
     run_or_fail_with "Error updating dotfiles checkout. Fix it and run update again" git pull --all --prune --rebase
 }
 
+check_workstation_type() {
+  if [[ ! -f $HOME/.workstation-type ]]; then
+    local workstation_type=""
+    until [[ $workstation_type == "work" || $workstation_type == "private" ]]; do
+      echo -e "${yellow}What type of workstation is this, 'work' or 'private'?${nc}"
+      read -e workstation_type
+    done
+    echo $workstation_type > $HOME/.workstation-type
+  fi
+}
+
 set_macos_defaults() {
     echo -e "${yellow}Set macOS defaults"
 
@@ -164,6 +175,7 @@ setup_brew() {
 
 update() {
     pull_dotfiles
+    check_workstation_type
     set_macos_defaults
     setup_gitconfig
     install_symlinks
