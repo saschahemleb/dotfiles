@@ -168,13 +168,19 @@ setup_brew() {
     run_or_fail_with "Error upgrading brew packages" brew upgrade
 
     bundle="$dotfiles_dir"/Brewfile
+    bundles=($dotfiles_dir"/Brewfile.all")
+    workstation_type=$(cat $HOME/.workstation-type)
+    if [[ -f $dotfiles_dir"/Brewfile.${workstation_type}" ]]; then
+      bundles+=($dotfiles_dir"/Brewfile.${workstation_type}")
+    fi
+    cat "${bundles[@]}" > $bundle
     if ! 1>/dev/null 2>&1 brew bundle check --file=$bundle; then
         run_or_fail_with "Error installing Brewfile dependencies" brew bundle --file=$bundle
     fi
 }
 
 update() {
-    pull_dotfiles
+    # pull_dotfiles
     check_workstation_type
     set_macos_defaults
     setup_gitconfig
