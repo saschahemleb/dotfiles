@@ -1,4 +1,4 @@
-function artisan() {
+function art() {
     if [ ! -f "artisan" ]; then
             return;
     fi
