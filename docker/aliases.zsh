@@ -1,7 +1,7 @@
 alias dc='docker compose'
 alias dori='docker run -it --rm '
 
-alias watchdog='docker run --env WATCHDOG_USERNAME --env WATCHDOG_PASSWORD --interactive --volume $(pwd):/a --workdir /a nexus.eventim.net:5043/tixx/watchdog/watchdog-cli:0.5.2'
+alias watchdog='docker run --env WATCHDOG_USERNAME --env WATCHDOG_PASSWORD --interactive --volume $(pwd):/a --workdir /a nexus.eventim.net:5043/tixx/watchdog/watchdog-cli:1.0.0'
 
 function netshoot_docker_container() {
 	if [ -z "$1" ]; then
