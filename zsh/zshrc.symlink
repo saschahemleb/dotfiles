@@ -54,6 +54,8 @@ unset config_files
 
 eval "$(direnv hook zsh)"
 
+eval "$(zoxide init --cmd cd zsh)"
+
 
 # Herd injected NVM configuration
 export NVM_DIR="$HOME/Library/Application Support/Herd/config/nvm"
