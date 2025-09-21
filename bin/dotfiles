@@ -52,9 +52,11 @@ check_workstation_type() {
 }
 
 set_macos_defaults() {
-    echo -e "${yellow}Set macOS defaults"
 
-    run_or_fail_with "Could not set macOS defaults" "$dotfiles_dir"/macos/set-defaults.sh
+    echo -e "${yellow}Skipping macOS defaults"
+    # echo -e "${yellow}Set macOS defaults"
+
+    # run_or_fail_with "Could not set macOS defaults" "$dotfiles_dir"/macos/set-defaults.sh
 }
 
 setup_gitconfig() {
