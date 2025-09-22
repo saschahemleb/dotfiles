@@ -54,6 +54,5 @@ if 1>/dev/null 2>&1 which starship; then
     eval "$(starship init zsh)"
 fi
 
-export PATH="/Users/sascha/.config/herd-lite/bin:$PATH"
-export PHP_INI_SCAN_DIR="/Users/sascha/.config/herd-lite/bin:$PHP_INI_SCAN_DIR"
-
+export PATH="$HOME/.config/herd-lite/bin:$PATH"
+export PHP_INI_SCAN_DIR="$HOME/.config/herd-lite/bin:$PHP_INI_SCAN_DIR"
