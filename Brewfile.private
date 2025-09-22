@@ -1,5 +1,4 @@
-cask "affinity-designer"
-cask "affinity-photo"
-cask "affinity-publisher"
 cask "moneymoney"
 cask "whatsapp"
+mas "Photomator", id: 1444636541
+mas "Pixelmator Pro", id: 1289583905
