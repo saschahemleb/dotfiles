@@ -61,7 +61,7 @@ set_macos_defaults() {
     # run_or_fail_with "Could not set macOS defaults" "$dotfiles_dir"/macos/set-defaults.sh
 }
 
-setup_gitconfig() {
+setup_local_gitconfig() {
   if [[ ! -f "$dotfiles_dir"/git/gitconfig.local.symlink ]]; then
     echo -e "${yellow}Setting up git${nc}"
 
@@ -102,6 +102,7 @@ link_file() {
   local src=$1 dst=$2
 
   local overwrite= backup= skip=
+  local overwrite_all=false backup_all=false skip_all=false
   local action=
 
   if [[ -f "$dst" ]] || [[ -d "$dst" ]] || [[ -L "$dst" ]]; then
@@ -137,9 +138,9 @@ link_file() {
 
     fi
 
-    overwrite=${overwrite:-$overwrite_all}
-    backup=${backup:-$backup_all}
-    skip=${skip:-$skip_all}
+    overwrite=${overwrite:-${overwrite_all:-false}}
+    backup=${backup:-${backup_all:-false}}
+    skip=${skip:-${skip_all:-false}}
 
     if [[ "$overwrite" == "true" ]]; then
       rm -rf "$dst"
@@ -155,15 +156,18 @@ link_file() {
   fi
 }
 
-install_symlinks() {
-    echo -e "${yellow}Installing symlinks${nc}"
+install_zshrc() {
+    echo -e "${yellow}Installing Zsh configuration${nc}"
 
-    local overwrite_all=false backup_all=false skip_all=false
+    link_file "$dotfiles_dir/zsh/zshrc.symlink" "$HOME/.zshrc"
+}
 
-    for src in $(find -H "$dotfiles_dir" -maxdepth 2 -name '*.symlink' -not -path '*.git*'); do
-        dst="$HOME/.$(basename "${src%.*}")"
-        link_file "$src" "$dst"
-    done
+setup_git() {
+    echo -e "${yellow}Installing Git configuration${nc}"
+
+    link_file "$dotfiles_dir/git/gitconfig.symlink" "$HOME/.gitconfig"
+    link_file "$dotfiles_dir/git/gitconfig.local.symlink" "$HOME/.gitconfig.local"
+    link_file "$dotfiles_dir/git/gitignore.symlink" "$HOME/.gitignore"
 }
 
 setup_brew() {
@@ -204,14 +208,22 @@ install_php() {
     run_or_fail_with "Error installing PHP" $(which bash) -c "$(curl -fsSL https://php.new/install/mac/8.4)"
 }
 
+setup_configs() {
+    echo -e "${yellow}Setup various apps${nc}"
+
+    link_file "$dotfiles_dir/configs/starship.toml" "$HOME/.config/starship.toml"
+}
+
 update() {
     pull_dotfiles
     check_workstation_type
     set_macos_defaults
-    setup_gitconfig
-    install_symlinks
+    setup_git
+    setup_local_gitconfig
+    install_zshrc
     setup_brew
     install_php
+    setup_configs
 
     echo -e "${green}Success! Dotfiles updated${nc}"
 
