@@ -55,7 +55,7 @@ check_workstation_type() {
 
 set_macos_defaults() {
 
-    echo -e "${yellow}Skipping macOS defaults"
+    echo -e "${yellow}Skipping macOS defaults${nc}"
     # echo -e "${yellow}Set macOS defaults"
 
     # run_or_fail_with "Could not set macOS defaults" "$dotfiles_dir"/macos/set-defaults.sh
@@ -179,6 +179,7 @@ setup_brew() {
     fi
 
     run_or_fail_with "Could not fetch latest Homebrew formulae" brew update
+    echo -e "${yellow}Upgrade installed packages${nc}"
     run_or_fail_with "Error upgrading brew packages" brew upgrade
 
     bundle="$dotfiles_dir"/Brewfile
@@ -189,6 +190,7 @@ setup_brew() {
     fi
     cat "${bundles[@]}" > $bundle
     if ! 1>/dev/null 2>&1 brew bundle check --file=$bundle; then
+        echo -e "${yellow}Install packages from Brewfile"
         run_or_fail_with "Error installing Brewfile dependencies" brew bundle --file=$bundle
     fi
 }
@@ -198,7 +200,7 @@ install_php() {
         return
     fi
 
-    echo -e "${yellow}Installing PHP"
+    echo -e "${yellow}Installing PHP${nc}"
     run_or_fail_with "Error installing PHP" $(which bash) -c "$(curl -fsSL https://php.new/install/mac/8.4)"
 }
 
@@ -213,7 +215,7 @@ update() {
 
     echo -e "${green}Success! Dotfiles updated${nc}"
 
-    exec $(which zsh)
+    echo -E "${yellow}Shell may need a restart for changes to take effect${nc}"
 }
 
 if [[ $# -eq 0 ]]; then
