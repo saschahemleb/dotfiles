@@ -1,12 +1,30 @@
-brew "mise"
+brew "autoconf" # dependency for mise php
+brew "automake" # dependency for mise php
+brew "bison" # dependency for mise php
 brew "curl"
 brew "direnv"
 brew "eza"
 brew "fzf"
+brew "freetype" # dependency for mise php
+brew "gd" # dependency for mise php
+brew "gettext" # dependency for mise php
 brew "git"
+brew "gmp" # dependency for mise php
+brew "icu4c" # dependency for mise php
+brew "imagemagick" # dependency for mise php
+brew "krb5" # dependency for mise php
 brew "lazydocker"
 brew "lazygit"
+brew "libedit" # dependency for mise php
+brew "libiconv" # dependency for mise php
+brew "libjpeg" # dependency for mise php
+brew "libpng" # dependency for mise php
+brew "libsodium" # dependency for mise php
+brew "libxml2" # dependency for mise php
+brew "libzip" # dependency for mise php
 brew "mas"
+brew "mise"
+brew "pkg-config" # dependency for mise php
 brew "starship"
 brew "tealdeer"
 brew "watch"
@@ -18,6 +36,8 @@ cask "font-jetbrains-mono-nerd-font"
 cask "ghostty"
 cask "orbstack"
 cask "raycast"
+brew "re2c" # dependency for mise php
 cask "spotify"
 cask "zed"
 cask "zen"
+brew "zlib" # dependency for mise php
