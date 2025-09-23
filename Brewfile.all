@@ -39,6 +39,7 @@ cask "orbstack"
 cask "raycast"
 brew "re2c" # dependency for mise php
 cask "spotify"
-cask "zed"
+cask "visual-studio-code"
 cask "zen"
 brew "zlib" # dependency for mise php
+vscode "phpactor.vscode-phpactor"
