@@ -43,3 +43,5 @@ cask "visual-studio-code"
 cask "zen"
 brew "zlib" # dependency for mise php
 vscode "phpactor.vscode-phpactor"
+vscode "catppuccin.catppuccin-vsc"
+vscode "catppuccin.catppuccin-vsc-icons"

@@ -152,6 +152,11 @@ link_file() {
   fi
 
   if [[ "$skip" != "true" ]]; then
+    dir=$(dirname "$dst")
+    if [[ ! -f "$dir" ]]; then
+      mkdir -p "$dir"
+    fi
+
     ln -s "$src" "$dst"
   fi
 }
@@ -212,6 +217,8 @@ setup_configs() {
     echo -e "${yellow}Setup various apps${nc}"
 
     link_file "$dotfiles_dir/configs/starship.toml" "$HOME/.config/starship.toml"
+    
+    link_file "$dotfiles_dir/configs/vscode/settings.json" "$HOME/Library/Application Support/Code/User/settings.json"
 }
 
 update() {
