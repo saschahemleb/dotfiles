@@ -1,13 +1,12 @@
 # shortcut to this dotfiles path is $DOTFILES
 export DOTFILES=$HOME/dotfiles
 
-zsh_autocomplete=$(brew --prefix zsh-autocomplete) || true
-if [[ -x "$zsh_autocomplete" ]]; then
-  source "$zsh_autocomplete/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh"
-fi
+eval "$(/opt/homebrew/bin/brew shellenv)"
 
-if [[ -f /opt/homebrew/bin/brew ]]; then
-  eval "$(/opt/homebrew/bin/brew shellenv)"
+brew_prefix="$(brew --prefix)"
+
+if [[ -f "$brew_prefix/opt/zsh-autocomplete/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh" ]]; then
+  source "$brew_prefix/opt/zsh-autocomplete/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh"
 fi
 
 # Stash your environment variables in ~/.profile. This means they'll stay out
@@ -58,12 +57,10 @@ if 1>/dev/null 2>&1 which starship; then
     eval "$(starship init zsh)"
 fi
 
-zsh_syntax_highlighting=$(brew --prefix zsh-syntax-highlighting) || true
-if [[ -x "$zsh_syntax_highlighting" ]]; then
-  source "$zsh_syntax_highlighting/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+if [[ -d "$brew_prefix/opt/zsh-syntax-highlighting" ]]; then
+  source "$brew_prefix/opt/zsh-syntax-highlighting/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 fi
 
-zsh_autosuggestions=$(brew --prefix zsh-autosuggestions) || true
-if [[ -x "$zsh_autosuggestions" ]]; then
-  source "$zsh_autosuggestions/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+if [[ -d "$brew_prefix/opt/zsh-autosuggestions" ]]; then
+  source "$brew_prefix/opt/zsh-autosuggestions/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 fi
