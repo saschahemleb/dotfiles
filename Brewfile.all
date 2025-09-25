@@ -8,7 +8,9 @@ brew "fzf"
 brew "freetype" # dependency for mise php
 brew "gd" # dependency for mise php
 brew "gettext" # dependency for mise php
+brew "gh"
 brew "git"
+brew "glab"
 brew "gmp" # dependency for mise php
 brew "icu4c" # dependency for mise php
 brew "imagemagick" # dependency for mise php
