@@ -43,7 +43,7 @@ function my_defaults(): array {
         new Defaults(domain: 'com.apple.dock', key: 'autohide-delay', value: 0.00),
         // Do not display recent apps in the Dock
         new Defaults(domain: 'com.apple.dock', key: 'show-recents', value: false),
-        // new Defaults('com.apple.dock', 'mineffect', 'suck'),
+        new Defaults(enable: false, domain: 'com.apple.dock', key: 'mineffect', value: 'suck'),
         // Only show active apps
         new Defaults(domain: 'com.apple.dock', key: 'static-only', value: true),
         // Scroll up on a Dock icon to show all Space's opened windows for an app
