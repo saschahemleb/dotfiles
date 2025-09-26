@@ -54,11 +54,9 @@ check_workstation_type() {
 }
 
 set_macos_defaults() {
+    echo -e "${yellow}Set macOS defaults"
 
-    echo -e "${yellow}Skipping macOS defaults${nc}"
-    # echo -e "${yellow}Set macOS defaults"
-
-    # run_or_fail_with "Could not set macOS defaults" "$dotfiles_dir"/macos/set-defaults.sh
+    run_or_fail_with "Could not set macOS defaults" "$dotfiles_dir"/macos/set-defaults.php
 }
 
 setup_local_gitconfig() {
@@ -224,12 +222,12 @@ setup_configs() {
 update() {
     pull_dotfiles
     check_workstation_type
-    set_macos_defaults
     setup_git
     setup_local_gitconfig
     install_zshrc
     setup_brew
     install_php
+    set_macos_defaults
     setup_configs
 
     echo -e "${green}Success! Dotfiles updated${nc}"
