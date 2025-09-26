@@ -6,6 +6,7 @@ red='\033[0;31m'
 green='\033[0;32m'
 yellow='\033[0;33m'
 nc='\033[0m'
+checkmark='\xE2\x9C\x94'
 
 # Get dotfiles dir (so run this script from anywhere)
 export dotfiles_dir
@@ -202,21 +203,27 @@ setup_brew() {
     fi
 }
 
-install_php() {
-    if 1>/dev/null 2>&1 which php; then
-        return
-    fi
-
-    echo -e "${yellow}Installing PHP${nc}"
-    run_or_fail_with "Error installing PHP" $(which bash) -c "$(curl -fsSL https://php.new/install/mac/8.4)"
-}
-
 setup_configs() {
     echo -e "${yellow}Setup various apps${nc}"
 
     link_file "$dotfiles_dir/configs/starship.toml" "$HOME/.config/starship.toml"
     
     link_file "$dotfiles_dir/configs/vscode/settings.json" "$HOME/Library/Application Support/Code/User/settings.json"
+}
+
+install_default_dev_packages() {
+    echo -e "${yellow}Installing default dev packages${nc}"
+    if ! 1>/dev/null 2>&1 which php; then
+      run_or_fail_with "Error installing PHP" $(which bash) -c "$(curl -fsSL https://php.new/install/mac/8.4)"
+    fi
+    echo -e "PHP ${green}${checkmark}${nc}"
+
+    run_or_fail_with "Error installing Bun" mise use -g bun@1.2
+    echo -e "Bun ${green}${checkmark}${nc}"
+    run_or_fail_with "Error installing Node" mise use -g node@24.9
+    echo -e "Node ${green}${checkmark}${nc}"
+    run_or_fail_with "Error installing Go" mise use -g go@1.25
+    echo -e "Go ${green}${checkmark}${nc}"
 }
 
 update() {
@@ -226,9 +233,9 @@ update() {
     setup_local_gitconfig
     install_zshrc
     setup_brew
-    install_php
     set_macos_defaults
     setup_configs
+    install_default_dev_packages
 
     echo -e "${green}Success! Dotfiles updated${nc}"
 
