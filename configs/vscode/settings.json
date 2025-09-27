@@ -17,5 +17,10 @@
     "window.commandCenter": false,
     "chat.disableAIFeatures": true,
     "workbench.editor.showTabs": "single",
-    "workbench.startupEditor": "none"
+    "workbench.startupEditor": "none",
+    "emmet.includeLanguages": {
+        "twig": "html"
+    },
+    "window.openFilesInNewWindow": "on",
+    "window.openFoldersInNewWindow": "on"
 }

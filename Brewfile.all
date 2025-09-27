@@ -40,6 +40,7 @@ cask "ghostty"
 cask "orbstack"
 cask "raycast"
 brew "re2c" # dependency for mise php
+cask "dash"
 cask "spotify"
 cask "visual-studio-code"
 cask "zen"
