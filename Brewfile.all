@@ -43,6 +43,7 @@ brew "re2c" # dependency for mise php
 cask "dash"
 cask "spotify"
 cask "visual-studio-code"
+cask "zed"
 cask "zen"
 brew "zlib" # dependency for mise php
 brew "zsh-autocomplete"

@@ -207,9 +207,11 @@ setup_configs() {
     echo -e "${yellow}Setup various apps${nc}"
 
     link_file "$dotfiles_dir/configs/starship.toml" "$HOME/.config/starship.toml"
-    
+
     link_file "$dotfiles_dir/configs/vscode/settings.json" "$HOME/Library/Application Support/Code/User/settings.json"
     link_file "$dotfiles_dir/configs/vscode/keybindings.json" "$HOME/Library/Application Support/Code/User/keybindings.json"
+
+    link_file "$dotfiles_dir/configs/zed/settings.json" "$HOME/.config/zed/settings.json"
 }
 
 install_default_dev_packages() {
