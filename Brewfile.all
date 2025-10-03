@@ -26,6 +26,7 @@ brew "libxml2" # dependency for mise php
 brew "libzip" # dependency for mise php
 brew "mas"
 brew "mise"
+brew "opencode"
 brew "pkg-config" # dependency for mise php
 brew "starship"
 brew "tealdeer"

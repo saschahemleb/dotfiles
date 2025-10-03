@@ -212,6 +212,8 @@ setup_configs() {
     link_file "$dotfiles_dir/configs/vscode/keybindings.json" "$HOME/Library/Application Support/Code/User/keybindings.json"
 
     link_file "$dotfiles_dir/configs/zed/settings.json" "$HOME/.config/zed/settings.json"
+
+    link_file "$dotfiles_dir/configs/opencode.json" "$HOME/.config/opencode/opencode.json"
 }
 
 install_default_dev_packages() {
