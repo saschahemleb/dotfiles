@@ -1,34 +1,19 @@
-brew "autoconf" # dependency for mise php
-brew "automake" # dependency for mise php
-brew "bison" # dependency for mise php
+brew "composer"
 brew "curl"
 brew "direnv"
 brew "eza"
 brew "fzf"
-brew "freetype" # dependency for mise php
-brew "gd" # dependency for mise php
-brew "gettext" # dependency for mise php
 brew "gh"
 brew "git"
 brew "glab"
-brew "gmp" # dependency for mise php
-brew "icu4c" # dependency for mise php
-brew "imagemagick" # dependency for mise php
-brew "krb5" # dependency for mise php
 brew "lazydocker"
 brew "lazygit"
-brew "libedit" # dependency for mise php
-brew "libiconv" # dependency for mise php
-brew "libjpeg" # dependency for mise php
-brew "libpng" # dependency for mise php
-brew "libsodium" # dependency for mise php
-brew "libxml2" # dependency for mise php
-brew "libzip" # dependency for mise php
 brew "mas"
 brew "mise"
 brew "opencode"
-brew "pkg-config" # dependency for mise php
+brew "php@8.4"
 brew "starship"
+brew "symfony-cli"
 brew "tealdeer"
 brew "watch"
 brew "wget"
@@ -40,16 +25,15 @@ cask "font-jetbrains-mono-nerd-font"
 cask "ghostty"
 cask "orbstack"
 cask "raycast"
-brew "re2c" # dependency for mise php
 cask "dash"
 cask "spotify"
 cask "visual-studio-code"
 cask "zed"
 cask "zen"
-brew "zlib" # dependency for mise php
 brew "zsh-autocomplete"
 brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
-vscode "phpactor.vscode-phpactor"
 vscode "catppuccin.catppuccin-vsc"
 vscode "catppuccin.catppuccin-vsc-icons"
+vscode "phpactor.vscode-phpactor"
+vscode "vue.volar"

@@ -219,15 +219,9 @@ setup_configs() {
 install_default_dev_packages() {
     echo -e "${yellow}Installing default dev packages${nc}"
 
-    if ! 1>/dev/null 2>&1 which php; then
-      run_or_fail_with "Error installing PHP" $(which bash) -c "$(curl -fsSL https://php.new/install/mac/8.4)"
+    if ! 1>/dev/null 2>&1 which laravel; then
+      run_or_fail_with "Error installing Laravel Installer" composer global require laravel/installer
     fi
-    echo -e "PHP ${green}${checkmark}${nc}"
-
-    if ! 1>/dev/null 2>&1 which symfony; then
-      run_or_fail_with "Error installing Symfony CLI" $(which bash) -c "$(curl -fsSL https://get.symfony.com/cli/installer)" -- --install-dir "$dotfiles_dir/bin"
-    fi
-    echo -e "Symfony CLI ${green}${checkmark}${nc}"
 
     run_or_fail_with "Error installing Bun" mise use -g bun@1.2
     echo -e "Bun ${green}${checkmark}${nc}"

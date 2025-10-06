@@ -17,15 +17,3 @@ alias netshoot_docker_host='docker run -it --net host nicolaka/netshoot'
 function k6() {
     docker run --rm --interactive --volume $PWD:/app --workdir /app grafana/k6:master-with-browser $@
 }
-
-function php@8.1() {
-    docker run --rm --interactive --volume $PWD:/_ --workdir /_ harbor.eventim.net/tixx/tixx-all/docker/php:8.1 $@
-}
-
-function php@8.2() {
-    docker run --rm --interactive --volume $PWD:/_ --workdir /_ harbor.eventim.net/tixx/tixx-all/docker/php:8.2 $@
-}
-
-function php@8.3() {
-    docker run --rm --interactive --volume $PWD:/_ --workdir /_ harbor.eventim.net/tixx/tixx-all/docker/php:8.3 $@
-}
