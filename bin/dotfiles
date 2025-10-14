@@ -231,6 +231,18 @@ install_default_dev_packages() {
     echo -e "Node ${green}${checkmark}${nc}"
     run_or_fail_with "Error installing Go" mise use -g go@1.25
     echo -e "Go ${green}${checkmark}${nc}"
+
+    run_or_fail_with "Error installing kubectl" mise use -g kubectl@1.33
+    echo -e "kubectl ${green}${checkmark}${nc}"
+    if ! 1>/dev/null 2>&1 kubectl krew version; then
+      run_or_fail_with "Error installing krew" "$dotfiles_dir"/k8s/install-krew.sh
+    fi
+    echo -e "krew ${green}${checkmark}${nc}"
+    while read -r plugin
+    do
+      run_or_fail_with "Error installing krew plugin '$plugin'" kubectl krew install "$plugin"
+      echo -e "krew plugin '$plugin' ${green}${checkmark}${nc}"
+    done < "$dotfiles_dir"/krew.txt
 }
 
 update() {

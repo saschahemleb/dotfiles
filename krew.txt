@@ -1,0 +1,6 @@
+cert-manager
+cnpg
+cost
+ctx
+deprecations
+ns
