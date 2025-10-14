@@ -48,6 +48,16 @@ function my_defaults(): array {
         new Defaults(domain: 'com.apple.dock', key: 'static-only', value: true),
         // Scroll up on a Dock icon to show all Space's opened windows for an app
         new Defaults(enable: false, domain: 'com.apple.dock', key: 'scroll-to-open', value: true),
+        // Show all file extensions in the Finder.
+        new Defaults(domain: null, key: 'AppleShowAllExtensions', value: true),
+        // Show hidden files inside the Finder
+        new Defaults(domain: 'com.apple.finder', key: 'AppleShowAllFiles', value: true),
+        // Hide path bar
+        new Defaults(domain: 'com.apple.finder', key: 'ShowPathbar', value: true),
+        // Do not display a warning when changing a file extension
+        new Defaults(domain: 'com.apple.finder', key: 'FXEnableExtensionChangeWarning', value: false),
+        // Remove the delay when hovering the toolbar title
+        new Defaults(domain: null, key: 'NSToolbarTitleViewRolloverDelay', value: 0.00),
     ];
 }
 

@@ -216,6 +216,9 @@ setup_configs() {
     link_file "$dotfiles_dir/configs/zed/settings.json" "$HOME/.config/zed/settings.json"
 
     link_file "$dotfiles_dir/configs/opencode.json" "$HOME/.config/opencode/opencode.json"
+
+    link_file "$dotfiles_dir/configs/k9s/config.yaml" "$HOME/Library/Application Support/k9s/config.yaml"
+    link_file "$dotfiles_dir/configs/k9s/skin_transparent.yaml" "$HOME/Library/Application Support/k9s/skins/transparent.yaml"
 }
 
 install_default_dev_packages() {
