@@ -1,0 +1,8 @@
+# Run `ghostty +show-config --default --docs` to view a list of
+# all available config options and their default values.
+# https://ghostty.org/docs/config.
+font-family = "JetBrainsMono Nerd Font"
+font-size = 16
+theme = dark:Catppuccin Mocha,light:Catppuccin Latte
+window-padding-x = 5
+window-padding-y = 5
