@@ -18,7 +18,7 @@ foreach (['Dock', 'Finder', 'SystemUIServer', 'System Settings'] as $app) {
 function my_defaults(): array {
     return [
         // Disable press-and-hold for keys in favor of key repeat
-        new Defaults(enable: false, domain: null, key: 'ApplePressAndHoldEnabled', value: false),
+        new Defaults(domain: null, key: 'ApplePressAndHoldEnabled', value: false),
         // Use AirDrop over every interface. srsly this should be a default
         new Defaults(enable: false, domain: 'com.apple.NetworkBrowser', key: 'BrowseAllInterfaces', value: new Value('1')),
         // Always open everything in Finder's list view
