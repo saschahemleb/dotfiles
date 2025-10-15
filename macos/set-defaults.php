@@ -11,7 +11,7 @@ foreach (my_defaults() as $defaults) {
     $defaults->apply();
 }
 
-foreach (['Dock', 'Finder'] as $app) {
+foreach (['Dock', 'Finder', 'SystemUIServer', 'System Settings'] as $app) {
     `killall "$app" &> /dev/null`;
 }
 
@@ -58,6 +58,18 @@ function my_defaults(): array {
         new Defaults(domain: 'com.apple.finder', key: 'FXEnableExtensionChangeWarning', value: false),
         // Remove the delay when hovering the toolbar title
         new Defaults(domain: null, key: 'NSToolbarTitleViewRolloverDelay', value: 0.00),
+        // Disable natural scrolling
+        new Defaults(domain: null, key: 'com.apple.swipescrolldirection', value: false),
+        // 'Auto' Appearance
+        new Defaults(domain: null, key: 'AppleInterfaceStyleSwitchesAutomatically', value: true),
+        // Show desktop only in stage manager on click
+        new Defaults(domain: 'com.apple.WindowManager', key: 'EnableStandardClickToShowDesktop', value: false),
+        // Always show Bluetooth in menu bar
+        new Defaults(domain: 'com.apple.controlcenter', key: 'Bluetooth', value: 18),
+        // Always show Bluetooth in menu bar
+        new Defaults(domain: 'com.apple.controlcenter', key: 'Sound', value: 18),
+        // Show battery percentage
+        new Defaults(domain: 'com.apple.controlcenter', key: 'BatteryShowPercentage', value: true),
     ];
 }
 
