@@ -1,4 +1,5 @@
 cask "moneymoney"
+cask "privadovpn"
 cask "whatsapp"
 mas "Photomator", id: 1444636541
 mas "Pixelmator Pro", id: 1289583905
