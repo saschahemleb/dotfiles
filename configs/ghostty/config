@@ -1,8 +1,30 @@
 # Run `ghostty +show-config --default --docs` to view a list of
 # all available config options and their default values.
 # https://ghostty.org/docs/config.
+shell-integration = detect
+shell-integration-features = cursor,sudo,no-title,ssh-env,no-ssh-terminfo
+macos-titlebar-proxy-icon = hidden
+mouse-hide-while-typing = true
+window-save-state = always
+
 font-family = "JetBrainsMono Nerd Font"
 font-size = 16
 theme = dark:Catppuccin Mocha,light:Catppuccin Latte
 window-padding-x = 5
 window-padding-y = 5
+
+keybind = ctrl+n=new_window
+
+keybind = ctrl+h=goto_split:left
+keybind = ctrl+j=goto_split:bottom
+keybind = ctrl+k=goto_split:top
+keybind = ctrl+l=goto_split:right
+
+keybind = ctrl+a>h=new_split:left
+keybind = ctrl+a>j=new_split:down
+keybind = ctrl+a>k=new_split:up
+keybind = ctrl+a>l=new_split:right
+keybind = ctrl+a>f=toggle_split_zoom
+
+keybind = ctrl+a>n=next_tab
+keybind = ctrl+a>p=previous_tab

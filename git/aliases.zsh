@@ -43,3 +43,5 @@ alias gdca='git diff --cached'
 alias gmom='git merge --no-ff $(git_main_branch)'
 alias gmc='git merge --continue'
 alias gsqm='git reset --soft $(git merge-base $(git_main_branch) HEAD)'
+
+alias g='lazygit'

@@ -2,7 +2,7 @@ alias dc='docker compose'
 alias dori='docker run -it --rm '
 alias dorime='docker run -it --rm --volume ./:/workdir --volume $SSH_AUTH_SOCK:$SSH_AUTH_SOCK -e SSH_AUTH_SOCK=$SSH_AUTH_SOCK --workdir /workdir --entrypoint /bin/bash'
 
-alias watchdog='docker run --platform linux/amd64 --rm --env WATCHDOG_USERNAME --env WATCHDOG_PASSWORD --interactive --volume $(pwd):/a --workdir /a harbor.eventim.net/tixx/tixx-all/watchdog/watchdog-cli:1.0.6'
+alias watchdog='docker run --platform linux/amd64 --rm --env WATCHDOG_USERNAME --env WATCHDOG_PASSWORD --interactive --volume $(pwd):/a --workdir /a harbor.eventim.net/tixx/tixx-all/watchdog/watchdog-cli:1.1.1'
 
 function netshoot_docker_container() {
 	if [ -z "$1" ]; then
