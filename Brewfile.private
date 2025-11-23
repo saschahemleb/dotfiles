@@ -1,3 +1,4 @@
+cask "balenaetcher"
 cask "moneymoney"
 cask "privadovpn"
 cask "whatsapp"
