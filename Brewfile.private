@@ -1,5 +1,6 @@
 cask "balenaetcher"
 cask "moneymoney"
+cask "moonlight"
 cask "privadovpn"
 cask "whatsapp"
 mas "Photomator", id: 1444636541
