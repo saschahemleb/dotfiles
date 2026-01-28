@@ -10,9 +10,10 @@ window-save-state = always
 
 font-family = "JetBrainsMono Nerd Font"
 font-size = 12
+font-thicken = true
 theme = dark:Catppuccin Mocha,light:Catppuccin Latte
-window-padding-x = 5
-window-padding-y = 5
+window-padding-x = 15
+window-padding-y = 10
 
 keybind = ctrl+n=new_window
 

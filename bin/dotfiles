@@ -210,6 +210,8 @@ setup_configs() {
 
     link_file "$dotfiles_dir/configs/starship.toml" "$HOME/.config/starship.toml"
 
+    link_file "$dotfiles_dir/configs/nvim" "$HOME/.config/nvim"
+
     link_file "$dotfiles_dir/configs/vscode/settings.json" "$HOME/Library/Application Support/Code/User/settings.json"
     link_file "$dotfiles_dir/configs/vscode/keybindings.json" "$HOME/Library/Application Support/Code/User/keybindings.json"
 
