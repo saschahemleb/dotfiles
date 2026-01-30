@@ -14,6 +14,7 @@ font-thicken = true
 theme = dark:Catppuccin Mocha,light:Catppuccin Latte
 window-padding-x = 15
 window-padding-y = 10
+window-theme = system
 
 title = "Ghostty"
 
