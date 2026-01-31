@@ -280,7 +280,7 @@ case $1 in
   help
   ;;
 "edit")
-  exec "${EDITOR:-vim}" "$dotfiles_dir"
+  exec "${EDITOR:-nvim}" "$dotfiles_dir"
   ;;
 "update")
   update
