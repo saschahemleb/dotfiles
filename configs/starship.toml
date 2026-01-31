@@ -37,6 +37,7 @@ success_symbol = "[❯](bold green)"
 
 [directory]
 truncate_to_repo = false
+format = '[$path]($style)[$read_only]($read_only_style)'
 
 [git_branch]
 symbol = ''
@@ -52,9 +53,9 @@ style = 'bold git'
 [git_status]
 format     = '[$all_status]($style)'
 style      = 'git'
-ahead      = "⇡${count} "
-diverged   = "⇕⇡${ahead_count}⇣${behind_count} "
-behind     = "⇣${count} "
+ahead      = "⇡${count}"
+diverged   = "⇕⇡${ahead_count}⇣${behind_count}"
+behind     = "⇣${count}"
 
 [golang]
 style = 'bold golang'
