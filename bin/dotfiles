@@ -13,34 +13,34 @@ export dotfiles_dir
 dotfiles_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && cd .. && pwd)"
 
 help() {
-    echo "Dotfiles management"
-    echo
-    echo -e "Usage: ${yellow}$0 <command>${nc}"
-    echo
-    echo "Commands:"
-    echo " help:    This help message"
-    echo " update:  Update dotfiles"
-    echo " edit:    Open dotfiles directory for editing"
-    echo
+  echo "Dotfiles management"
+  echo
+  echo -e "Usage: ${yellow}$0 <command>${nc}"
+  echo
+  echo "Commands:"
+  echo " help:    This help message"
+  echo " update:  Update dotfiles"
+  echo " edit:    Open dotfiles directory for editing"
+  echo
 }
 
 run_or_fail_with() {
-    local errmsg=$1
-    shift
-    if ! out=$(2>&1 $@); then
-        echo -e "${red}${errmsg}${nc}"
-        echo "Output:"
-        echo "$out"
-        exit 1
-    fi
+  local errmsg=$1
+  shift
+  if ! out=$(2>&1 $@); then
+    echo -e "${red}${errmsg}${nc}"
+    echo "Output:"
+    echo "$out"
+    exit 1
+  fi
 }
 
 pull_dotfiles() {
-    echo -e "${yellow}Pulling latest dotfiles changes${nc}"
-    cd "$dotfiles_dir"
-    (run_or_fail_with \
-        "Error updating dotfiles checkout. Fix it and run update again" \
-        git pull --all --prune --rebase) || true
+  echo -e "${yellow}Pulling latest dotfiles changes${nc}"
+  cd "$dotfiles_dir"
+  (run_or_fail_with \
+    "Error updating dotfiles checkout. Fix it and run update again" \
+    git pull --all --prune --rebase) || true
 }
 
 check_workstation_type() {
@@ -50,14 +50,14 @@ check_workstation_type() {
       echo -e "${yellow}What type of workstation is this, 'work' or 'private'?${nc}"
       read -e workstation_type
     done
-    echo $workstation_type > $HOME/.workstation-type
+    echo $workstation_type >$HOME/.workstation-type
   fi
 }
 
 set_macos_defaults() {
-    echo -e "${yellow}Set macOS defaults"
+  echo -e "${yellow}Set macOS defaults"
 
-    run_or_fail_with "Could not set macOS defaults" "$dotfiles_dir"/macos/set-defaults.php
+  run_or_fail_with "Could not set macOS defaults" "$dotfiles_dir"/macos/set-defaults.php
 }
 
 setup_local_gitconfig() {
@@ -84,11 +84,11 @@ setup_local_gitconfig() {
     read -e git_authoremail
 
     if [[ "$create_key" = "true" ]]; then
-        ssh-keygen -t ed25519 -C "$git_authoremail"
-        ssh_key_file="$HOME/.ssh/id_ed25519"
+      ssh-keygen -t ed25519 -C "$git_authoremail"
+      ssh_key_file="$HOME/.ssh/id_ed25519"
     fi
 
-    cat <<INI > git/gitconfig.local.symlink
+    cat <<INI >git/gitconfig.local.symlink
 [user]
         name = $git_authorname
         email = $git_authoremail
@@ -110,27 +110,32 @@ link_file() {
       local currentSrc="$(readlink "$dst")"
 
       if [[ "$currentSrc" == "$src" ]]; then
-        skip=true;
+        skip=true
       else
         echo -e "${yellow}File already exists: $dst ($(basename "$src")), what do you want to do?\n\
         [s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all?${nc}"
         read -sn 1 action
 
         case "$action" in
-          o)
-            overwrite=true;;
-          O)
-            overwrite_all=true;;
-          b)
-            backup=true;;
-          B)
-            backup_all=true;;
-          s)
-            skip=true;;
-          S)
-            skip_all=true;;
-          *)
-            ;;
+        o)
+          overwrite=true
+          ;;
+        O)
+          overwrite_all=true
+          ;;
+        b)
+          backup=true
+          ;;
+        B)
+          backup_all=true
+          ;;
+        s)
+          skip=true
+          ;;
+        S)
+          skip_all=true
+          ;;
+        *) ;;
         esac
 
       fi
@@ -161,126 +166,128 @@ link_file() {
 }
 
 install_zshrc() {
-    echo -e "${yellow}Installing Zsh configuration${nc}"
+  echo -e "${yellow}Installing Zsh configuration${nc}"
 
-    link_file "$dotfiles_dir/zsh/zshrc.symlink" "$HOME/.zshrc"
+  link_file "$dotfiles_dir/zsh/zshrc.symlink" "$HOME/.zshrc"
 }
 
 setup_git() {
-    echo -e "${yellow}Installing Git configuration${nc}"
+  echo -e "${yellow}Installing Git configuration${nc}"
 
-    link_file "$dotfiles_dir/git/gitconfig.symlink" "$HOME/.gitconfig"
-    link_file "$dotfiles_dir/git/gitconfig.local.symlink" "$HOME/.gitconfig.local"
-    link_file "$dotfiles_dir/git/gitignore.symlink" "$HOME/.gitignore"
+  link_file "$dotfiles_dir/git/gitconfig.symlink" "$HOME/.gitconfig"
+  link_file "$dotfiles_dir/git/gitconfig.local.symlink" "$HOME/.gitconfig.local"
+  link_file "$dotfiles_dir/git/gitignore.symlink" "$HOME/.gitignore"
 }
 
 setup_brew() {
-    echo -e "${yellow}Setting up brew.sh. Might ask for sudo password${nc}"
+  echo -e "${yellow}Setting up brew.sh. Might ask for sudo password${nc}"
 
-    if ! 1>/dev/null 2>&1 which brew; then
-        /usr/bin/env bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-        if [[ -f /opt/homebrew/bin/brew ]]; then
-          eval "$(/opt/homebrew/bin/brew shellenv)"
-        elif [[ -f /usr/local/bin/brew ]]; then
-          eval "$(/usr/local/bin/brew shellenv)"
-        fi
+  if ! 1>/dev/null 2>&1 which brew; then
+    /usr/bin/env bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    if [[ -f /opt/homebrew/bin/brew ]]; then
+      eval "$(/opt/homebrew/bin/brew shellenv)"
+    elif [[ -f /usr/local/bin/brew ]]; then
+      eval "$(/usr/local/bin/brew shellenv)"
     fi
+  fi
 
-    run_or_fail_with "Could not fetch latest Homebrew formulae" brew update
-    echo -e "${yellow}Upgrade installed packages${nc}"
-    run_or_fail_with "Error upgrading brew packages" brew upgrade
+  run_or_fail_with "Could not fetch latest Homebrew formulae" brew update
+  echo -e "${yellow}Upgrade installed packages${nc}"
+  run_or_fail_with "Error upgrading brew packages" brew upgrade
 
-    bundle="$dotfiles_dir"/Brewfile
-    bundles=($dotfiles_dir"/Brewfile.all")
-    workstation_type=$(cat $HOME/.workstation-type)
-    if [[ -f $dotfiles_dir"/Brewfile.${workstation_type}" ]]; then
-      bundles+=($dotfiles_dir"/Brewfile.${workstation_type}")
-    fi
-    cat "${bundles[@]}" > $bundle
-    if ! 1>/dev/null 2>&1 brew bundle check --file=$bundle; then
-        echo -e "${yellow}Install packages from Brewfile"
-        run_or_fail_with "Error installing Brewfile dependencies" brew bundle --file=$bundle
-    fi
+  bundle="$dotfiles_dir"/Brewfile
+  bundles=($dotfiles_dir"/Brewfile.all")
+  workstation_type=$(cat $HOME/.workstation-type)
+  if [[ -f $dotfiles_dir"/Brewfile.${workstation_type}" ]]; then
+    bundles+=($dotfiles_dir"/Brewfile.${workstation_type}")
+  fi
+  cat "${bundles[@]}" >$bundle
+  if ! 1>/dev/null 2>&1 brew bundle check --file=$bundle; then
+    echo -e "${yellow}Install packages from Brewfile"
+    run_or_fail_with "Error installing Brewfile dependencies" brew bundle --file=$bundle
+  fi
 }
 
 setup_configs() {
-    echo -e "${yellow}Setup various apps${nc}"
+  echo -e "${yellow}Setup various apps${nc}"
 
-    link_file "$dotfiles_dir/configs/ghostty/config" "$HOME/Library/Application Support/com.mitchellh.ghostty/config"
+  link_file "$dotfiles_dir/configs/ghostty/config" "$HOME/Library/Application Support/com.mitchellh.ghostty/config"
 
-    link_file "$dotfiles_dir/configs/starship.toml" "$HOME/.config/starship.toml"
+  link_file "$dotfiles_dir/configs/starship.toml" "$HOME/.config/starship.toml"
 
-    link_file "$dotfiles_dir/configs/nvim" "$HOME/.config/nvim"
+  link_file "$dotfiles_dir/configs/nvim" "$HOME/.config/nvim"
 
-    link_file "$dotfiles_dir/configs/vscode/settings.json" "$HOME/Library/Application Support/Code/User/settings.json"
-    link_file "$dotfiles_dir/configs/vscode/keybindings.json" "$HOME/Library/Application Support/Code/User/keybindings.json"
+  rm "$HOME/Library/Application Support/Code/User/settings.json"
+  rm "$HOME/Library/Application Support/Code/user/keybindings.json"
 
-    link_file "$dotfiles_dir/configs/zed/settings.json" "$HOME/.config/zed/settings.json"
+  rm "$HOME/.config/zed/settings.json"
 
-    link_file "$dotfiles_dir/configs/opencode.json" "$HOME/.config/opencode/opencode.json"
+  link_file "$dotfiles_dir/configs/opencode.json" "$HOME/.config/opencode/opencode.json"
 
-    link_file "$dotfiles_dir/configs/k9s/config.yaml" "$HOME/Library/Application Support/k9s/config.yaml"
-    link_file "$dotfiles_dir/configs/k9s/skin_transparent.yaml" "$HOME/Library/Application Support/k9s/skins/transparent.yaml"
+  link_file "$dotfiles_dir/configs/k9s/config.yaml" "$HOME/Library/Application Support/k9s/config.yaml"
+  link_file "$dotfiles_dir/configs/k9s/skin_transparent.yaml" "$HOME/Library/Application Support/k9s/skins/transparent.yaml"
 }
 
 install_default_dev_packages() {
-    echo -e "${yellow}Installing default dev packages${nc}"
+  echo -e "${yellow}Installing default dev packages${nc}"
 
-    if ! 1>/dev/null 2>&1 which laravel; then
-      run_or_fail_with "Error installing Laravel Installer" composer global require laravel/installer
-    fi
+  if ! 1>/dev/null 2>&1 which laravel; then
+    run_or_fail_with "Error installing Laravel Installer" composer global require laravel/installer
+  fi
 
-    run_or_fail_with "Error installing Bun" mise use -g bun@1.2
-    echo -e "Bun ${green}${checkmark}${nc}"
-    run_or_fail_with "Error installing Node" mise use -g node@24.9
-    echo -e "Node ${green}${checkmark}${nc}"
-    run_or_fail_with "Error installing Go" mise use -g go@1.25
-    echo -e "Go ${green}${checkmark}${nc}"
+  run_or_fail_with "Error installing Bun" mise use -g bun@1.2
+  echo -e "Bun ${green}${checkmark}${nc}"
+  run_or_fail_with "Error installing Node" mise use -g node@24.9
+  echo -e "Node ${green}${checkmark}${nc}"
+  run_or_fail_with "Error installing Go" mise use -g go@1.25
+  echo -e "Go ${green}${checkmark}${nc}"
 
-    run_or_fail_with "Error installing kubectl" mise use -g kubectl@1.33
-    echo -e "kubectl ${green}${checkmark}${nc}"
-    if ! 1>/dev/null 2>&1 kubectl krew version; then
-      run_or_fail_with "Error installing krew" "$dotfiles_dir"/k8s/install-krew.sh
-    fi
-    echo -e "krew ${green}${checkmark}${nc}"
-    while read -r plugin
-    do
-      run_or_fail_with "Error installing krew plugin '$plugin'" kubectl krew install "$plugin"
-      echo -e "krew plugin '$plugin' ${green}${checkmark}${nc}"
-    done < "$dotfiles_dir"/krew.txt
+  run_or_fail_with "Error installing kubectl" mise use -g kubectl@1.33
+  echo -e "kubectl ${green}${checkmark}${nc}"
+  if ! 1>/dev/null 2>&1 kubectl krew version; then
+    run_or_fail_with "Error installing krew" "$dotfiles_dir"/k8s/install-krew.sh
+  fi
+  echo -e "krew ${green}${checkmark}${nc}"
+  while read -r plugin; do
+    run_or_fail_with "Error installing krew plugin '$plugin'" kubectl krew install "$plugin"
+    echo -e "krew plugin '$plugin' ${green}${checkmark}${nc}"
+  done <"$dotfiles_dir"/krew.txt
 }
 
 update() {
-    pull_dotfiles
-    check_workstation_type
-    setup_git
-    setup_local_gitconfig
-    install_zshrc
-    setup_brew
-    set_macos_defaults
-    setup_configs
-    install_default_dev_packages
+  pull_dotfiles
+  check_workstation_type
+  setup_git
+  setup_local_gitconfig
+  install_zshrc
+  setup_brew
+  set_macos_defaults
+  setup_configs
+  install_default_dev_packages
 
-    echo -e "${green}Success! Dotfiles updated${nc}"
+  echo -e "${green}Success! Dotfiles updated${nc}"
 
-    echo -e "${yellow}Shell may need a restart for changes to take effect${nc}"
+  echo -e "${yellow}Shell may need a restart for changes to take effect${nc}"
 }
 
 if [[ $# -eq 0 ]]; then
-    help
-    exit 0
+  help
+  exit 0
 fi
 
 case $1 in
-    "" | "help" | "-h" | "--help")
-        help;;
-    "edit")
-        exec "${EDITOR:-vim}" "$dotfiles_dir";;
-    "update")
-        update;;
-    *)
-        >&2 echo -e "${red}Error: '$command_name' is not a known command${nc}"
-        >&2 help
-        exit 1
-        ;;
+"" | "help" | "-h" | "--help")
+  help
+  ;;
+"edit")
+  exec "${EDITOR:-vim}" "$dotfiles_dir"
+  ;;
+"update")
+  update
+  ;;
+*)
+  >&2 echo -e "${red}Error: '$command_name' is not a known command${nc}"
+  >&2 help
+  exit 1
+  ;;
 esac
