@@ -8,7 +8,7 @@ format = """
 $kubernetes\
 $directory\
 ( $git_branch)\
-$git_commit\
+( $git_commit)\
 $git_state\
 $git_status\
 $package\
@@ -18,7 +18,7 @@ $package\
 ( $php)\
 ( $terraform)\
 $aws\
-$cmd_duration\
+( $cmd_duration)\
 $jobs\
 $battery
 $character\
@@ -42,10 +42,12 @@ format = '[$path]($style)[$read_only]($read_only_style)'
 [git_branch]
 symbol = ''
 style = 'bold git'
+format = '[$symbol$branch(:$remote_branch)]($style)'
 
 [git_commit]
 only_detached = false
 style = 'git'
+format = '[\($hash$tag\)]($style)'
 
 [git_state]
 style = 'bold git'
@@ -85,6 +87,7 @@ version_format = '${major}.${minor}'
 [cmd_duration]
 min_time = 1_000
 show_milliseconds = true
+format = '[$duration]($style)'
 
 [[battery.display]]
 threshold = 10
