@@ -245,6 +245,7 @@ setup_pacman() {
 
   local packages=(
     zsh
+    neovim
   )
 
   run_or_fail_with "Error installing pacman packages" sudo pacman -S --needed "${packages[@]}"
