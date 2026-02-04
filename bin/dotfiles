@@ -35,6 +35,33 @@ run_or_fail_with() {
   fi
 }
 
+operating_system() {
+  local os
+  local os_id
+  os=$(uname -s)
+  case "$os" in
+    Darwin)
+      echo "macos"
+      ;;
+    Linux)
+      os_id=$(source /etc/os-release; echo $ID)
+      case "$os_id" in
+        cachyos)
+          echo "cachyos"
+          ;;
+        *)
+          echo -e "${red}Unsupported Linux OS: $os_id${nc}"
+          exit 1
+          ;;
+      esac
+      ;;
+    *)
+      echo -e "${red}Unsupported OS: $os{$nc}"
+      exit 1
+      ;;
+  esac
+}
+
 pull_dotfiles() {
   echo -e "${yellow}Pulling latest dotfiles changes${nc}"
   cd "$dotfiles_dir"
@@ -209,23 +236,29 @@ setup_brew() {
 }
 
 setup_configs() {
+  local os
+  os=$(operating_system)
+
   echo -e "${yellow}Setup various apps${nc}"
 
-  link_file "$dotfiles_dir/configs/ghostty/config" "$HOME/Library/Application Support/com.mitchellh.ghostty/config"
+  case "$os" in
+    macos)
+      link_file "$dotfiles_dir/configs/ghostty/config" "$HOME/Library/Application Support/com.mitchellh.ghostty/config"
+      ;;
+  esac
 
   link_file "$dotfiles_dir/configs/starship.toml" "$HOME/.config/starship.toml"
 
   link_file "$dotfiles_dir/configs/nvim" "$HOME/.config/nvim"
 
-  rm "$HOME/Library/Application Support/Code/User/settings.json"
-  rm "$HOME/Library/Application Support/Code/user/keybindings.json"
-
-  rm "$HOME/.config/zed/settings.json"
-
   link_file "$dotfiles_dir/configs/opencode.json" "$HOME/.config/opencode/opencode.json"
 
-  link_file "$dotfiles_dir/configs/k9s/config.yaml" "$HOME/Library/Application Support/k9s/config.yaml"
-  link_file "$dotfiles_dir/configs/k9s/skin_transparent.yaml" "$HOME/Library/Application Support/k9s/skins/transparent.yaml"
+  case "$os" in
+    macos)
+      link_file "$dotfiles_dir/configs/k9s/config.yaml" "$HOME/Library/Application Support/k9s/config.yaml"
+      link_file "$dotfiles_dir/configs/k9s/skin_transparent.yaml" "$HOME/Library/Application Support/k9s/skins/transparent.yaml"
+      ;;
+  esac
 }
 
 install_default_dev_packages() {
@@ -255,15 +288,29 @@ install_default_dev_packages() {
 }
 
 update() {
+  local os
+  os=$(operating_system)
+  
   pull_dotfiles
   check_workstation_type
   setup_git
   setup_local_gitconfig
   install_zshrc
-  setup_brew
-  set_macos_defaults
+  
+  case "$os" in
+    macos)
+      setup_brew
+      set_macos_defaults
+      ;;
+  esac
+
   setup_configs
-  install_default_dev_packages
+
+  case "$os" in
+    macos)
+      install_default_dev_packages
+      ;;
+  esac
 
   echo -e "${green}Success! Dotfiles updated${nc}"
 
