@@ -3,7 +3,7 @@ printf '\33c\e[3J'
 # shortcut to this dotfiles path is $DOTFILES
 export DOTFILES=$HOME/dotfiles
 
-local os=$(dotfiles-os)
+local os=$($DOTFILES/bin/dotfiles-os)
 
 case "$os" in
   macos)
