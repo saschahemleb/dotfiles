@@ -3,13 +3,23 @@ printf '\33c\e[3J'
 # shortcut to this dotfiles path is $DOTFILES
 export DOTFILES=$HOME/dotfiles
 
-eval "$(/opt/homebrew/bin/brew shellenv)"
+local os=$(dotfiles-os)
 
-brew_prefix="$(brew --prefix)"
+case "$os" in
+  macos)
+    eval "$(/opt/homebrew/bin/brew shellenv)"
 
-if [[ -f "$brew_prefix/opt/zsh-autocomplete/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh" ]]; then
-  source "$brew_prefix/opt/zsh-autocomplete/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh"
-fi
+    brew_prefix="$(brew --prefix)"
+
+    if [[ -f "$brew_prefix/opt/zsh-autocomplete/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh" ]]; then
+      source "$brew_prefix/opt/zsh-autocomplete/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh"
+    fi
+    ;;
+
+  cachyos)
+    source "/usr/share/zsh/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh"
+    ;;
+esac
 
 # Stash your environment variables in ~/.profile. This means they'll stay out
 # of your main dotfiles repository (which may be public, like this one), but
@@ -59,10 +69,18 @@ if 1>/dev/null 2>&1 which starship; then
     eval "$(starship init zsh)"
 fi
 
-if [[ -d "$brew_prefix/opt/zsh-syntax-highlighting" ]]; then
-  source "$brew_prefix/opt/zsh-syntax-highlighting/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-fi
+case "$os" in
+  macos)
+    if [[ -d "$brew_prefix/opt/zsh-syntax-highlighting" ]]; then
+      source "$brew_prefix/opt/zsh-syntax-highlighting/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+    fi
 
-if [[ -d "$brew_prefix/opt/zsh-autosuggestions" ]]; then
-  source "$brew_prefix/opt/zsh-autosuggestions/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
-fi
+    if [[ -d "$brew_prefix/opt/zsh-autosuggestions" ]]; then
+      source "$brew_prefix/opt/zsh-autosuggestions/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+    fi
+    ;;
+  cachyos)
+    source "/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh"
+    source "/usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh"
+    ;;
+esac

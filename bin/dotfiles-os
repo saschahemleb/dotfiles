@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+operating_system() {
+  local os
+  local os_id
+  os=$(uname -s)
+  case "$os" in
+  Darwin)
+    echo "macos"
+    ;;
+  Linux)
+    os_id=$(
+      source /etc/os-release
+      echo $ID
+    )
+    case "$os_id" in
+    cachyos)
+      echo "cachyos"
+      ;;
+    *)
+      echo -e "${red}Unsupported Linux OS: $os_id${nc}"
+      exit 1
+      ;;
+    esac
+    ;;
+  *)
+    echo -e "${red}Unsupported OS: $os{$nc}"
+    exit 1
+    ;;
+  esac
+}
+
+operating_system

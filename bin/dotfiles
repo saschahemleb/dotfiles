@@ -40,25 +40,28 @@ operating_system() {
   local os_id
   os=$(uname -s)
   case "$os" in
-    Darwin)
-      echo "macos"
-      ;;
-    Linux)
-      os_id=$(source /etc/os-release; echo $ID)
-      case "$os_id" in
-        cachyos)
-          echo "cachyos"
-          ;;
-        *)
-          echo -e "${red}Unsupported Linux OS: $os_id${nc}"
-          exit 1
-          ;;
-      esac
+  Darwin)
+    echo "macos"
+    ;;
+  Linux)
+    os_id=$(
+      source /etc/os-release
+      echo $ID
+    )
+    case "$os_id" in
+    cachyos)
+      echo "cachyos"
       ;;
     *)
-      echo -e "${red}Unsupported OS: $os{$nc}"
+      echo -e "${red}Unsupported Linux OS: $os_id${nc}"
       exit 1
       ;;
+    esac
+    ;;
+  *)
+    echo -e "${red}Unsupported OS: $os{$nc}"
+    exit 1
+    ;;
   esac
 }
 
@@ -243,18 +246,55 @@ setup_pacman() {
     exit 1
   fi
 
-  local packages=(
-    zsh
+  local base_packages=(
+    ghostty
     neovim
+    starship
+    zen-browser-bin
+    zsh
+    zsh-autocomplete
+    zsh-autosuggestions
+    zsh-syntax-highlighting
   )
 
-  run_or_fail_with "Error installing pacman packages" sudo pacman -S --needed "${packages[@]}"
+  run_or_fail_with "Error installing packages" sudo pacman -S --needed "${base_packages[@]}"
+
+  local niri_pacman_packages=(
+    niri
+    xdg-desktop-portal-gnome
+    xdg-desktop-portal-gtk
+    xwayland-satellite
+  )
+
+  run_or_fail_with "Error installing packages" sudo pacman -S --needed "${niri_pacman_packages[@]}"
 
   if 1>/dev/null 2>&1 which paru; then
     local aur_packages=(
     )
-    run_or_fail_with "Error installing AUR packages" paru -S --needed "${aur_packages[@]}"
+    run_or_fail_with "Error installing packages" paru -S --needed "${aur_packages[@]}"
+
+    local niri_aur_packages=(
+      dms-shell-bin
+      matugen
+      cava
+      qt6-multimedia-ffmpeg
+    )
+    run_or_fail_with "Error installing packages" paru -S --needed "${niri_aur_packages[@]}"
   fi
+}
+
+change_shell() {
+  if [[ "$SHELL" == $(which zsh) ]]; then
+    return
+  fi
+  echo -e "${yellow}Change default shell${nc}"
+
+  if ! 1>/dev/null 2>&1 which zsh; then
+    echo -e "${red}zsh not found.${nc}"
+    exit 1
+  fi
+
+  chsh -s $(which zsh)
 }
 
 setup_configs() {
@@ -264,9 +304,12 @@ setup_configs() {
   echo -e "${yellow}Setup various apps${nc}"
 
   case "$os" in
-    macos)
-      link_file "$dotfiles_dir/configs/ghostty/config" "$HOME/Library/Application Support/com.mitchellh.ghostty/config"
-      ;;
+  macos)
+    link_file "$dotfiles_dir/configs/ghostty/config" "$HOME/Library/Application Support/com.mitchellh.ghostty/config"
+    ;;
+  cachyos)
+    link_file "$dotfiles_dir/configs/ghostty/config" "$HOME/.config/ghostty/config"
+    ;;
   esac
 
   link_file "$dotfiles_dir/configs/starship.toml" "$HOME/.config/starship.toml"
@@ -276,10 +319,16 @@ setup_configs() {
   link_file "$dotfiles_dir/configs/opencode.json" "$HOME/.config/opencode/opencode.json"
 
   case "$os" in
-    macos)
-      link_file "$dotfiles_dir/configs/k9s/config.yaml" "$HOME/Library/Application Support/k9s/config.yaml"
-      link_file "$dotfiles_dir/configs/k9s/skin_transparent.yaml" "$HOME/Library/Application Support/k9s/skins/transparent.yaml"
-      ;;
+  macos)
+    link_file "$dotfiles_dir/configs/k9s/config.yaml" "$HOME/Library/Application Support/k9s/config.yaml"
+    link_file "$dotfiles_dir/configs/k9s/skin_transparent.yaml" "$HOME/Library/Application Support/k9s/skins/transparent.yaml"
+    ;;
+  esac
+
+  case "$os" in
+  cachyos)
+    link_file "$dotfiles_dir/configs/niri/config.kdl" "$HOME/.config/niri/config.kdl"
+    ;;
   esac
 }
 
@@ -312,29 +361,30 @@ install_default_dev_packages() {
 update() {
   local os
   os=$(operating_system)
-  
+
   pull_dotfiles
   check_workstation_type
   setup_git
   setup_local_gitconfig
   install_zshrc
-  
+
   case "$os" in
-    macos)
-      setup_brew
-      set_macos_defaults
-      ;;
-    cachyos)
-      setup_pacman
-      ;;
+  macos)
+    setup_brew
+    set_macos_defaults
+    ;;
+  cachyos)
+    setup_pacman
+    change_shell
+    ;;
   esac
 
   setup_configs
 
   case "$os" in
-    macos)
-      install_default_dev_packages
-      ;;
+  macos)
+    install_default_dev_packages
+    ;;
   esac
 
   echo -e "${green}Success! Dotfiles updated${nc}"
