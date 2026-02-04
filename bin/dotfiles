@@ -235,6 +235,27 @@ setup_brew() {
   fi
 }
 
+setup_pacman() {
+  echo -e "${yellow}Setting up pacman packages. Might ask for sudo password${nc}"
+
+  if ! 1>/dev/null 2>&1 which pacman; then
+    echo -e "${red}pacman not found. Install a package manager before continuing.${nc}"
+    exit 1
+  fi
+
+  local packages=(
+    zsh
+  )
+
+  run_or_fail_with "Error installing pacman packages" sudo pacman -S --needed "${packages[@]}"
+
+  if 1>/dev/null 2>&1 which paru; then
+    local aur_packages=(
+    )
+    run_or_fail_with "Error installing AUR packages" paru -S --needed "${aur_packages[@]}"
+  fi
+}
+
 setup_configs() {
   local os
   os=$(operating_system)
@@ -301,6 +322,9 @@ update() {
     macos)
       setup_brew
       set_macos_defaults
+      ;;
+    cachyos)
+      setup_pacman
       ;;
   esac
 
