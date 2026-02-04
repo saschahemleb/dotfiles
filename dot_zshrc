@@ -1,0 +1,86 @@
+printf '\33c\e[3J'
+
+# shortcut to this dotfiles path is $DOTFILES
+export DOTFILES=$HOME/dotfiles
+
+local os=$($DOTFILES/bin/dotfiles-os)
+
+case "$os" in
+  macos)
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+
+    brew_prefix="$(brew --prefix)"
+
+    if [[ -f "$brew_prefix/opt/zsh-autocomplete/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh" ]]; then
+      source "$brew_prefix/opt/zsh-autocomplete/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh"
+    fi
+    ;;
+
+  cachyos)
+    source "/usr/share/zsh/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh"
+    ;;
+esac
+
+# Stash your environment variables in ~/.profile. This means they'll stay out
+# of your main dotfiles repository (which may be public, like this one), but
+# you'll have access to them in your scripts.
+if [[ -f $HOME/.profile ]]; then
+    source $HOME/.profile
+fi
+
+# all of our zsh files
+typeset -U config_files
+config_files=($DOTFILES/**/*.zsh)
+
+# load the path files
+for file in ${(M)config_files:#*/path.zsh}
+do
+  source $file
+done
+
+# load everything but the path and completion files
+for file in ${${config_files:#*/path.zsh}:#*/completion.zsh}
+do
+  source $file
+done
+
+
+# load every completion after autocomplete loads
+for file in ${(M)config_files:#*/completion.zsh}
+do
+  source $file
+done
+
+unset config_files
+
+if 1>/dev/null 2>&1 which mise; then
+    eval "$(mise activate zsh)"
+fi
+
+if 1>/dev/null 2>&1 which direnv; then
+    eval "$(direnv hook zsh)"
+fi
+
+if 1>/dev/null 2>&1 which zoxide; then
+    eval "$(zoxide init --cmd cd zsh)"
+fi
+
+if 1>/dev/null 2>&1 which starship; then
+    eval "$(starship init zsh)"
+fi
+
+case "$os" in
+  macos)
+    if [[ -d "$brew_prefix/opt/zsh-syntax-highlighting" ]]; then
+      source "$brew_prefix/opt/zsh-syntax-highlighting/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+    fi
+
+    if [[ -d "$brew_prefix/opt/zsh-autosuggestions" ]]; then
+      source "$brew_prefix/opt/zsh-autosuggestions/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+    fi
+    ;;
+  cachyos)
+    source "/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh"
+    source "/usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh"
+    ;;
+esac
