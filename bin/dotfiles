@@ -250,6 +250,7 @@ setup_pacman() {
     ghostty
     neovim
     starship
+    ttf-jetbrains-mono-nerd
     zen-browser-bin
     zsh
     zsh-autocomplete
