@@ -30,6 +30,7 @@ golang = '#007d9c'
 helm = '#0f1689'
 nodejs = '#417e38'
 php = '#4F5B93'
+opentofu = '#FFD700'
 
 [character]
 error_symbol = "[✗](bold red)"
